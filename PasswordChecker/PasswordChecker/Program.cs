@@ -1,6 +1,8 @@
+using System.Security.Cryptography.X509Certificates;
+
 namespace PasswordChecker
 {
-    internal static class Program
+    public class Program
     {
         /// <summary>
         ///  The main entry point for the application.
@@ -8,50 +10,96 @@ namespace PasswordChecker
         [STAThread]
         static void Main()
         {
-            // To customize application configuration such as set high DPI settings or default font,
-            // see https://aka.ms/applicationconfiguration.
             ApplicationConfiguration.Initialize();
             Application.Run(new Form1());
         }
 
-        static void TestPasswordLength(string password, out string lengthResult, out string numberResult, out string specialChar)
+        static bool TestPasswordFormat(string password)
         {
-            lengthResult = "";
-            numberResult = "";
-            specialChar = "";
+            bool validResult;
 
-            if (password != null)
+            if (password.Contains(" ") || password.Contains(""))
             {
-                if (password.Length > 16)
-                {
-                    lengthResult = "Your password is longer than 16 characters";
-                }
-                else
-                {
-                    lengthResult = "Your password is not long enough to be secure";
-                }
+                validResult = false;
 
-                if (password.Any(char.IsDigit))
-                {
-                    numberResult = "Your password contains a number";
-                }
-                else
-                {
-                    numberResult = "Your password doesn't contains a number and is therefore not secure";
-                }
-
-                if (!password.Any(char.IsLetterOrDigit))
-                {
-                    specialChar = "Your password contains a special character";
-                }
-                else
-                {
-                    specialChar = "Your password doesn't contains a special character and is therefore not secure";
-                }
             }
             else
             {
-                lengthResult = "Please enter a password";
+                validResult = true;
+            }
+
+            return validResult;
+        }
+
+        static bool TestPasswordLength(string password)
+        {
+            bool lengthResult;
+
+            if (password.Length > 16)
+            {
+                lengthResult = true;
+            }
+            else
+            {
+                lengthResult = false;
+            }
+            return lengthResult;
+        }
+
+        static bool TestPasswordNumbers(string password)
+        {
+            bool numberResult;
+
+            if (password.Any(char.IsDigit))
+            {
+                numberResult = true;
+            }
+            else
+            {
+                numberResult = false;
+            }
+
+            return numberResult;
+        }
+
+        static bool TestPasswordSpecialCharacters(string password)
+        {
+            bool specialChar;
+
+            if (!password.Any(char.IsLetterOrDigit))
+            {
+                specialChar = true;
+            }
+            else
+            {
+                specialChar = false;
+            }
+
+            return specialChar;
+        }
+
+        public bool TestPassword(string password)
+        {
+
+            if (!TestPasswordFormat(password))
+            {
+               return false;
+            }
+            else if (!TestPasswordLength(password))
+            {
+                return false;
+            }
+            else if (!TestPasswordNumbers(password))
+            {
+                return false;
+            }
+            else if (!TestPasswordSpecialCharacters(password))
+            {
+                return false;
+            }
+            else 
+            { 
+                 return true; 
             }
         }
     }
