@@ -1,4 +1,4 @@
-namespace _230712_Daily_Noodle
+namespace PasswordChecker
 {
     public partial class Form1 : Form
     {

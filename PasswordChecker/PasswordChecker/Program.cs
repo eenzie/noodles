@@ -1,4 +1,4 @@
-namespace _230712_Daily_Noodle
+namespace PasswordChecker
 {
     internal static class Program
     {
